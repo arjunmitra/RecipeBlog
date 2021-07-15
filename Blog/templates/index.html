@@ -16,22 +16,27 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-7">
-            <h1>Bootstrap 4 Blog - A free template by Bootstrap Temple</h1><a href="#" class="hero-link">Discover More</a>
+            <h1>Reetika Mitra Fooding Around</h1><a href="#" class="hero-link">Discover More</a>
           </div>
         </div><a href=".intro" class="continue link-scroll"><i class="fa fa-long-arrow-down"></i> Scroll Down</a>
       </div>
     </section>
+
     <!-- Intro Section-->
-    <section class="intro">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-8">
-            <h2 class="h3">Some great intro here</h2>
-            <p class="text-big">Place a nice <strong>introduction</strong> here <strong>to catch reader's attention</strong>. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderi.</p>
-          </div>
-        </div>
-      </div>
-    </section>
+<!--    <section class="intro">-->
+<!--      <div class="container">-->
+<!--        <div class="row">-->
+<!--          <div class="col-lg-8">-->
+<!--            <h2 class="h3">Some great intro here</h2>-->
+<!--            <p class="text-big">Place a nice <strong>introduction</strong> here <strong>to catch reader's attention</strong>. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderi.</p>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </section>-->
+     <br>
+
+
+
     <section class="featured-posts no-padding-top">
       <div class="container">
         <!-- Post-->
@@ -75,7 +80,7 @@
       <div class="container">
         <div class="row">
           <div class="col-md-7">
-            <h2>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</h2><a href="#" class="hero-link">View More</a>
+            <h2>We have new recipes uploaded every week so please feel free to return back to see what we share next</h2><a href="#" class="hero-link">View More</a>
           </div>
         </div>
       </div>
@@ -85,24 +90,23 @@
       <div class="container">
         <header> 
           <h2>Latest from the blog</h2>
-          <p class="text-big">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+          <p class="text-big">Check out our latest recipes</p>
         </header>
         <div class="row">
           {% for obj in latest %}
-          <div class="post col-md-4">
-            <div class="post-thumbnail"><a href="#"><img src="{{ obj.thumbnail.url}}" alt="..." class="img-fluid"></a></div>
-<!--            <div class="post-details">-->
-<!--              <div class="post-meta d-flex justify-content-between">-->
-<!--                <div class="date">{{obj.timestamp}}</div>-->
-<!--                <div class="category">-->
-<!--                  {% for cat in obj.categories.all%}-->
-<!--                  <a href="#"> {{cat}}</a>-->
-<!--                  {% endfor %}-->
-<!--                </div>-->
-<!--              </div><a href="#">-->
-<!--                <h3 class="h4">{{obj.title}}</h3></a>-->
-<!--              <p class="text-muted">{{obj.overview}}</p>-->
-<!--            </div>-->
+
+
+          <div class="card" style="width: 23rem;">
+            <img src="{{ obj.thumbnail.url}}" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">{{obj.title}}</h5>
+              <p class="card-text">{{obj.overview}}</p>
+<!--              <a href="#" class="btn btn-primary">Go somewhere</a>-->
+              <footer class="post-footer ">
+                  <div class="date"><i class="icon-clock"></i> {{obj.timestamp}}</div>
+                  <div class="comments"><i class="icon-comment"></i> {{obj.comment_count}}</div>
+                </footer>
+            </div>
           </div>
           {% endfor %}
 
@@ -110,26 +114,26 @@
       </div>
     </section>
     <!-- Newsletter Section-->
-    <section class="newsletter no-padding-top">    
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6">
-            <h2>Subscribe to Newsletter</h2>
-            <p class="text-big">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-          </div>
-          <div class="col-md-8">
-            <div class="form-holder">
-              <form action="#">
-                <div class="form-group">
-                  <input type="email" name="email" id="email" placeholder="Type your email address">
-                  <button type="submit" class="submit">Subscribe</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+<!--    <section class="newsletter no-padding-top">    -->
+<!--      <div class="container">-->
+<!--        <div class="row">-->
+<!--          <div class="col-md-6">-->
+<!--            <h2>Subscribe to Newsletter</h2>-->
+<!--            <p class="text-big">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>-->
+<!--          </div>-->
+<!--          <div class="col-md-8">-->
+<!--            <div class="form-holder">-->
+<!--              <form action="#">-->
+<!--                <div class="form-group">-->
+<!--                  <input type="email" name="email" id="email" placeholder="Type your email address">-->
+<!--                  <button type="submit" class="submit">Subscribe</button>-->
+<!--                </div>-->
+<!--              </form>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </section>-->
     <!-- Gallery Section-->
 <!--    <section class="gallery no-padding">    -->
 <!--      <div class="row">-->
