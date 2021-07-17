@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.urls import reverse
-
+from ckeditor.fields import RichTextField
 User = get_user_model()
 # Create your models here.
 class Author(models.Model):
@@ -19,6 +19,7 @@ class Category(models.Model):
 class Post(models.Model):
     title = models.CharField(max_length=100)
     overview = models.TextField()
+    body = RichTextField(default="This is the body ")
     timestamp = models.DateTimeField(auto_now_add=True)
     comment_count = models.IntegerField(default=0)
     view_count = models.IntegerField(default=0)
@@ -26,6 +27,8 @@ class Post(models.Model):
     thumbnail = models.ImageField(upload_to='postImages/')
     categories = models.ManyToManyField(Category)
     featured = models.BooleanField()
+    previous_post = models.ForeignKey('self',related_name='previous',on_delete=models.SET_NULL, blank=True,null=True)
+    next_post = models.ForeignKey('self',related_name='next', on_delete=models.SET_NULL,blank=True,null=True)
 
     def __str__(self):
         return self.title
