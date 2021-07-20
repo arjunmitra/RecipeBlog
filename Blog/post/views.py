@@ -1,8 +1,37 @@
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404,redirect
-from .models import Post
+from .models import Post, Category
 from django.db.models import Count, Q
 from .forms import CommentForm
+
+def category_search(request):
+    print(request.GET['category'])
+
+    query = request.GET.get('category')
+    category = Category.objects.filter(title = query)
+    queryset = Post.objects.filter(categories = category[0])
+
+
+    category_count = get_category_count()
+    most_recent = Post.objects.order_by("-timestamp")[:3]
+    paginator = Paginator(queryset, 4)
+    page_request_var = 'page'
+    page = request.GET.get(page_request_var)
+    try:
+        paginated_queryset = paginator.page(page)
+    except PageNotAnInteger:
+        paginated_queryset = paginator.page(1)
+    except EmptyPage:
+        paginated_queryset = paginator.page(paginator.num_pages)
+
+    context = {
+        'queryset': paginated_queryset,
+        'most_recent': most_recent,
+        'page_request_var': page_request_var,
+        'category_count': category_count
+    }
+    return render(request, "blog.html", context)
+
 
 def search(request):
     queryset = Post.objects.all()

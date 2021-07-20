@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from post.views import index, blog, post, search
+from post.views import index, blog, post, search, category_search
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,4 +25,5 @@ urlpatterns = [
     path('blog/', blog, name="post-list"),
     path('post/<id>/', post,name="post-detail"),
     path('search/', search,name="search"),
+    path('categories', category_search,name="category-search"),
 ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
