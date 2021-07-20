@@ -16,14 +16,14 @@
                   <div class="post-meta d-flex justify-content-between">
 
                     {% for cat in post.categories.all %}
-                    <div class="category"><a href="#">{{cat}}</a></div>
+                    <div class="category"><strong>{{cat}}</strong></div>
                     {% endfor %}
                   </div><a href="{{post.get_absolute_url}}">
                     <h3 class="h4">{{post.title}}</h3></a>
                   <p class="text-muted">{{post.overview|linebreaks|truncatechars:200 }}</p>
-                  <footer class="post-footer d-flex align-items-center"><a href="#" class="author d-flex align-items-center flex-wrap">
+                  <footer class="post-footer d-flex align-items-center">
                       <div class="avatar"><img src="{{post.author.profile_picture.url}}" alt="..." class="img-fluid"></div>
-                      <div class="title"><span>{{post.author.user.username}}</span></div></a>
+                      <div class="title"><span>{{post.author.user.username}}</span></div>
                     <div class="date"><i class="icon-clock"></i> {{post.timestamp|timesince}} ago</div>
                     <div class="comments meta-last"><i class="icon-comment"></i>{{post.comment_count}}</div>
                   </footer>
