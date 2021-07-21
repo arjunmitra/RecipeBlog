@@ -14,10 +14,13 @@
                 <div class="post-thumbnail"><a href="{{post.get_absolute_url}}"><img src="{{ post.thumbnail.url }}" alt="..." class="img-fluid" style="height: 15rem; width:20rem;"></a></div>
                 <div class="post-details">
                   <div class="post-meta d-flex justify-content-between">
-
+                    <div class="category">
+                      <h6>
                     {% for cat in post.categories.all %}
-                    <div class="category"><strong>{{cat}}</strong></div>
+                      <strong>{{cat}}</strong>
                     {% endfor %}
+                      </h6>
+                    </div>
                   </div><a href="{{post.get_absolute_url}}">
                     <h3 class="h4">{{post.title}}</h3></a>
                   <p class="text-muted">{{post.overview|linebreaks|truncatechars:200 }}</p>

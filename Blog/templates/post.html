@@ -13,9 +13,15 @@
               <div class="post-details">
                 <div class="post-meta d-flex justify-content-between">
                   <div class="category">
+                    <h4>
                      {% for cat in post.categories.all%}
-                    <h4><strong>{{cat}}</strong></h4>
+                    <strong>{{cat}}</strong>
                     {% endfor %}
+                    </h4>
+                  </div>
+                  <div>
+                    <strong><a href="">Update</a></strong>
+                    <strong><a href="">Delete</a></strong>
                   </div>
                 </div>
                 <h1>{{post.title}}</h1>

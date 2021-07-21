@@ -1,12 +1,16 @@
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.shortcuts import render, get_object_or_404,redirect
-from .models import Post, Category
+from django.shortcuts import render, get_object_or_404,redirect,reverse
+from .models import Post, Category, Author
 from django.db.models import Count, Q
-from .forms import CommentForm
+from .forms import CommentForm, PostForm
+
+def get_author(user):
+    qs= Author.objects.filter(user=user.id)
+    if qs.exists():
+        return qs[0]
+    return None
 
 def category_search(request):
-    print(request.GET['category'])
-
     query = request.GET.get('category')
     category = Category.objects.filter(title = query)
     queryset = Post.objects.filter(categories = category[0])
@@ -34,6 +38,7 @@ def category_search(request):
 
 
 def search(request):
+
     queryset = Post.objects.all()
     query = request.GET.get('q')
     if query:
@@ -118,3 +123,26 @@ def post(request,id):
 
     }
     return render(request,"post.html",context )
+
+def post_create(request ):
+    form = PostForm(request.POST or None, request.FILES or None )
+    author = get_author(request.user)
+    if request.method == "POST":
+        if form.is_valid():
+            form.instance.author = get_author(author)
+            form.save()
+            return redirect(reverse("post-detail",kwargs={
+                'id' : form.instance.id
+            }))
+        else:
+            print(form.errors)
+    context = {
+        'form':form
+    }
+    return render(request,"post_create.html" , context)
+
+def post_update(request,id):
+    pass
+
+def post_delete(request,id):
+    pass

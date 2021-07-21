@@ -22,7 +22,7 @@ class Category(models.Model):
 class Post(models.Model):
     title = models.CharField(max_length=100)
     overview = models.TextField()
-    body = RichTextField(default="This is the body ")
+    body = RichTextField()
     timestamp = models.DateTimeField(auto_now_add=True)
     comment_count = models.IntegerField(default=0)
     view_count = models.IntegerField(default=0)
@@ -38,6 +38,14 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse('post-detail', kwargs={
+            'id': self.id
+        })
+    def get_update_url(self):
+        return reverse('post-update', kwargs={
+            'id': self.id
+        })
+    def get_delete_url(self):
+        return reverse('post-delete', kwargs={
             'id': self.id
         })
     @property
