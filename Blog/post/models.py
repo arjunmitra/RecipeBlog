@@ -4,6 +4,10 @@ from django.urls import reverse
 from ckeditor.fields import RichTextField
 User = get_user_model()
 # Create your models here.
+
+
+
+
 class Author(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_picture = models.ImageField(upload_to='authorImages/')
@@ -24,8 +28,8 @@ class Post(models.Model):
     overview = models.TextField()
     body = RichTextField()
     timestamp = models.DateTimeField(auto_now_add=True)
-    comment_count = models.IntegerField(default=0)
-    view_count = models.IntegerField(default=0)
+    # comment_count = models.IntegerField(default=0)
+    # view_count = models.IntegerField(default=0)
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     thumbnail = models.ImageField(upload_to='postImages/')
     categories = models.ManyToManyField(Category)
@@ -51,6 +55,13 @@ class Post(models.Model):
     @property
     def get_comments(self):
         return self.comments.all().order_by('-timestamp')
+    @property
+    def view_count(self):
+        return PostView.objects.filter(post=self).count()
+    @property
+    def comment_count(self):
+        return Comment.objects.filter(post=self).count()
+
 
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -60,3 +71,8 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.user.username
+
+
+class PostView(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
