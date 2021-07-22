@@ -20,8 +20,8 @@
                     </h4>
                   </div>
                   <div>
-                    <strong><a href="">Update</a></strong>
-                    <strong><a href="">Delete</a></strong>
+                    <strong><a href="{% url 'post-update' id=post.id%}">Update</a></strong>
+                    <strong><a href="{% url 'post-delete' id=post.id%}">Delete</a></strong>
                   </div>
                 </div>
                 <h1>{{post.title}}</h1>
