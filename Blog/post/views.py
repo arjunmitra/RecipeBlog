@@ -3,6 +3,8 @@ from django.shortcuts import render, get_object_or_404,redirect,reverse
 from .models import Post, Category, Author, PostView
 from django.db.models import Count, Q
 from .forms import CommentForm, PostForm
+import os
+from django.conf import settings
 
 def get_author(user):
     qs= Author.objects.filter(user=user.id)
@@ -170,5 +172,6 @@ def post_update(request,id):
 def post_delete(request,id):
     post = get_object_or_404(Post,id=id)
     post.delete()
+    os.remove(settings.MEDIA_ROOT + '/' + str(post.thumbnail))
     return redirect(reverse("post-list"))
 
