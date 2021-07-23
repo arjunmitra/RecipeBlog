@@ -2,11 +2,9 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from ckeditor.fields import RichTextField
-User = get_user_model()
+
 # Create your models here.
-
-
-
+User = get_user_model()
 
 class Author(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -14,22 +12,18 @@ class Author(models.Model):
 
     def __str__(self):
         return self.user.username
+
 class Category(models.Model):
     title= models.CharField(max_length=30)
 
     def __str__(self):
         return self.title
 
-
-
-
 class Post(models.Model):
     title = models.CharField(max_length=100)
     overview = models.TextField()
     body = RichTextField()
     timestamp = models.DateTimeField(auto_now_add=True)
-    # comment_count = models.IntegerField(default=0)
-    # view_count = models.IntegerField(default=0)
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     thumbnail = models.ImageField(upload_to='postImages/')
     categories = models.ManyToManyField(Category)
@@ -52,12 +46,15 @@ class Post(models.Model):
         return reverse('post-delete', kwargs={
             'id': self.id
         })
+
     @property
     def get_comments(self):
         return self.comments.all().order_by('-timestamp')
+
     @property
     def view_count(self):
         return PostView.objects.filter(post=self).count()
+
     @property
     def comment_count(self):
         return Comment.objects.filter(post=self).count()

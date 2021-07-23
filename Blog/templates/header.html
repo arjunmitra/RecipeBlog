@@ -20,7 +20,6 @@
           <!-- Navbar Brand -->
           <div class="navbar-header d-flex align-items-center justify-content-between">
             <!-- Navbar Brand -->
-<!--            <a href="/" class="navbar-brand">Bootstrap Blog</a>-->
             <img src="https://reetikamitra.com/wp-content/uploads/2020/06/Logo.png"  alt="Responsive image">
             <!-- Toggle Button-->
             <button type="button" data-toggle="collapse" data-target="#navbarcollapse" aria-controls="navbarcollapse" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"><span></span><span></span><span></span></button>
@@ -33,17 +32,15 @@
               </li>
               <li class="nav-item"><a href="/blog" class="nav-link {% if request.path == '/blog/' %} active {% endif %}">Blog</a>
               </li>
-<!--              <li class="nav-item"><a href="/post" class="nav-link {% if 'post' in request.path %} active {% endif %}">Post</a>-->
-<!--              </li>-->
+
               <li class="nav-item"><a href="#" class="nav-link ">Contact</a>
               </li>
               {% if request.user.is_staff %}
-              <li class="nav-item"><a href="{% url 'post-create'%}" class="nav-link ">Create</a>
+              <li class="nav-item"><a href="{% url 'post-create'%}" class="nav-link {% if 'create' in request.path %} active {% endif %}">Create</a>
               </li>
               {% endif %}
             </ul>
             <div class="navbar-text"><a href="#" class="search-btn"><i class="icon-search-1"></i></a></div>
-<!--            <ul class="langs navbar-text"><a href="#" class="active">EN</a><span>           </span><a href="#">ES</a></ul>-->
           </div>
         </div>
       </nav>

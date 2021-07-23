@@ -21,12 +21,7 @@
         </div>
       </div>
     </section>
-
-
      <br>
-
-
-
     <section class="featured-posts no-padding-top">
       <div class="container">
         <!-- Post-->
@@ -36,9 +31,7 @@
           {% if not forloop.first and not forloop.last %}
 
           <div class="image col-lg-5">
-<!--              <a href="{{obj.get_absolute_url}}">-->
               <img src="{{obj.thumbnail.url}}" class="img-fluid" style=""  alt="...">
-<!--              </a>-->
           </div>
           {% endif %}
           <div class="text col-lg-7">
@@ -47,7 +40,6 @@
                 <header class="post-header">
                   <div class="category">
                     {% for cat in obj.categories.all%}
-<!--                    <a href="#">{{cat}}</a>-->
                       <strong>{{cat}}</strong>
                     {% endfor %}
                   </div><a href="{{obj.get_absolute_url}}">
@@ -65,9 +57,7 @@
           </div>
           {% if forloop.first or forloop.last %}
           <div class="image col-lg-5">
-<!--              <a href="{{obj.get_absolute_url}}">-->
               <img src="{{obj.thumbnail.url}}" class="img-fluid" style=""  alt="...">
-<!--              </a>-->
           </div>
           {% endif %}
         </div>
@@ -94,8 +84,6 @@
         </header>
         <div class="row">
           {% for obj in latest %}
-
-
           <div class="card" style="width: 23rem;">
             <img src="{{ obj.thumbnail.url}}" class="card-img-top"  style= "height: 15rem; " alt="...">
             <div class="card-body">
@@ -103,7 +91,6 @@
               <strong><h5 class="card-title" style="color:black;">{{obj.title}}</h5></strong>
                 </a>
               <p class="card-text">{{obj.overview|linebreaks|truncatechars:200 }}</p>
-<!--              <a href="#" class="btn btn-primary">Go somewhere</a>-->
               <footer class="post-footer ">
                   <div class="date"><i class="icon-clock"></i> {{obj.timestamp}}</div>
                   <div class="comments"><i class="icon-comment"></i> {{obj.comment_count}}</div>

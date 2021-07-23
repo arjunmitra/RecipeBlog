@@ -17,30 +17,10 @@ def category_search(request):
     category = Category.objects.filter(title = query)
     queryset = Post.objects.filter(categories = category[0])
 
-
-    category_count = get_category_count()
-    most_recent = Post.objects.order_by("-timestamp")[:3]
-    paginator = Paginator(queryset, 4)
-    page_request_var = 'page'
-    page = request.GET.get(page_request_var)
-    try:
-        paginated_queryset = paginator.page(page)
-    except PageNotAnInteger:
-        paginated_queryset = paginator.page(1)
-    except EmptyPage:
-        paginated_queryset = paginator.page(paginator.num_pages)
-
-    context = {
-        'queryset': paginated_queryset,
-        'most_recent': most_recent,
-        'page_request_var': page_request_var,
-        'category_count': category_count
-    }
-    return render(request, "blog.html", context)
+    return general_search(request,queryset)
 
 
 def search(request):
-
     queryset = Post.objects.all()
     query = request.GET.get('q')
     if query:
@@ -48,8 +28,9 @@ def search(request):
             Q(title__icontains=query) |
             Q(overview__icontains=query)
         ).distinct()
+    return general_search(request,queryset)
 
-
+def general_search(request,queryset):
     category_count = get_category_count()
     most_recent = Post.objects.order_by("-timestamp")[:3]
     paginator = Paginator(queryset, 4)
@@ -111,7 +92,6 @@ def post(request,id):
     category_count = get_category_count()
     if request.user.is_authenticated:
         PostView.objects.get_or_create(user=request.user,post=post)
-
 
     form = CommentForm(request.POST  or None)
     if request.method == "POST":
