@@ -3,8 +3,9 @@ from django.shortcuts import render, get_object_or_404,redirect,reverse
 from .models import Post, Category, Author, PostView
 from django.db.models import Count, Q
 from .forms import CommentForm, PostForm
-import os
 from django.conf import settings
+
+import os
 
 def get_author(user):
     qs= Author.objects.filter(user=user.id)
@@ -17,7 +18,7 @@ def category_search(request):
     category = Category.objects.filter(title = query)
     queryset = Post.objects.filter(categories = category[0])
 
-    return general_search(request,queryset)
+    return general_blog(request,queryset)
 
 
 def search(request):
@@ -28,9 +29,9 @@ def search(request):
             Q(title__icontains=query) |
             Q(overview__icontains=query)
         ).distinct()
-    return general_search(request,queryset)
+    return general_blog(request,queryset)
 
-def general_search(request,queryset):
+def general_blog(request,queryset):
     category_count = get_category_count()
     most_recent = Post.objects.order_by("-timestamp")[:3]
     paginator = Paginator(queryset, 4)
@@ -65,26 +66,10 @@ def index(request):
     return render(request,"index.html",context)
 
 def blog(request):
-    category_count = get_category_count()
-    most_recent = Post.objects.order_by("-timestamp")[:3]
-    post_list = Post.objects.all()
-    paginator = Paginator(post_list,4)
-    page_request_var = 'page'
-    page = request.GET.get(page_request_var)
-    try:
-        paginated_queryset = paginator.page(page)
-    except PageNotAnInteger:
-        paginated_queryset = paginator.page(1)
-    except EmptyPage:
-        paginated_queryset = paginator.page(paginator.num_pages)
+    queryset = Post.objects.all()
+    return general_blog(request,queryset)
 
-    context = {
-        'queryset' : paginated_queryset,
-        'most_recent' : most_recent,
-        'page_request_var': page_request_var,
-        'category_count' : category_count
-    }
-    return render(request,"blog.html",context)
+
 
 def post(request,id):
     post = get_object_or_404(Post, id=id)
