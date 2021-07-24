@@ -1,6 +1,7 @@
 
 {% extends "base.html"%}
 {% load static %}
+{% load my_tags %}
 {% block content %}
 <style>
   img {
@@ -28,7 +29,8 @@
         {% for obj in object_list %}
 
         <div class="row d-flex align-items-stretch">
-          {% if not forloop.first and not forloop.last %}
+          {% if forloop.counter|modulo:2 == 1 %}
+
 
           <div class="image col-lg-5">
               <img src="{{obj.thumbnail.url}}" class="img-fluid" style=""  alt="...">
@@ -55,7 +57,8 @@
               </div>
             </div>
           </div>
-          {% if forloop.first or forloop.last %}
+          {% if forloop.counter|modulo:2 != 1 %}
+
           <div class="image col-lg-5">
               <img src="{{obj.thumbnail.url}}" class="img-fluid" style=""  alt="...">
           </div>
