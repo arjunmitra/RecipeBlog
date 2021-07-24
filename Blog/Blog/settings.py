@@ -31,8 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'crispy_forms',
-    'ckeditor',
+    'crispy_forms', # styling forms
+    'ckeditor', # using rich text editor field
     'post',
     'Blog',
     'django.contrib.admin',
@@ -123,6 +123,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+# creating paths for static and media file
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static",

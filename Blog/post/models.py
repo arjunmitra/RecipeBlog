@@ -4,7 +4,7 @@ from django.urls import reverse
 from ckeditor.fields import RichTextField
 
 # Create your models here.
-User = get_user_model()
+User = get_user_model() # getting user object
 
 class Author(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -21,19 +21,19 @@ class Category(models.Model):
 
 class Post(models.Model):
     title = models.CharField(max_length=100)
-    overview = models.TextField()
+    overview = models.TextField()# description of recipe
     body = RichTextField()
     timestamp = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     thumbnail = models.ImageField(upload_to='postImages/')
     categories = models.ManyToManyField(Category)
-    featured = models.BooleanField()
+    featured = models.BooleanField()# whether we want to feature post on home page
     previous_post = models.ForeignKey('self',related_name='previous',on_delete=models.SET_NULL, blank=True,null=True)
     next_post = models.ForeignKey('self',related_name='next', on_delete=models.SET_NULL,blank=True,null=True)
 
     def __str__(self):
         return self.title
-
+    # urls for crud operations
     def get_absolute_url(self):
         return reverse('post-detail', kwargs={
             'id': self.id
