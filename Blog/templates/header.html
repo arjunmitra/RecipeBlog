@@ -16,7 +16,15 @@
             </div>
           </div>
         </div>
+
+        <div>
+          {% if request.user.is_authenticated %}
+            <h5 style="text-align:left;">Hello, {{request.user.username}}</h5>
+          {% endif %}
+        </div>
+
         <div class="container">
+
           <!-- Navbar Brand -->
           <div class="navbar-header d-flex align-items-center justify-content-between">
             <!-- Navbar Brand -->
@@ -33,10 +41,16 @@
               <li class="nav-item"><a href="/blog" class="nav-link {% if request.path == '/blog/' %} active {% endif %}">Blog</a>
               </li>
 
-              <li class="nav-item"><a href="#" class="nav-link ">Contact</a>
-              </li>
               {% if request.user.is_staff %}
               <li class="nav-item"><a href="{% url 'post-create'%}" class="nav-link {% if 'create' in request.path %} active {% endif %}">Create</a>
+              </li>
+              {% endif %}
+
+              {% if request.user.is_authenticated == False %}
+              <li class="nav-item"><a href="{% url 'account_login'%}" class="nav-link {% if 'login' in request.path %} active {% endif %}">Login</a>
+              </li>
+              {% else %}
+              <li class="nav-item"><a href="{% url 'account_logout'%}" class="nav-link {% if 'logout' in request.path %} active {% endif %}">Logout</a>
               </li>
               {% endif %}
             </ul>
