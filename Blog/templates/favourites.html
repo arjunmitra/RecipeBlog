@@ -1,0 +1,67 @@
+{% extends "base.html"%}
+{% load my_tags %}
+{% load static %}
+{% block content %}
+{% if isEmpty %}
+
+        <section style="background: url({% static 'img/divider-bg.jpg' %}); background-size: cover; background-position: center bottom" class="divider">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-7">
+            <h2>You have not added any favourites yet. Please feel free to add as many recipes to your favourites</h2>
+          </div>
+        </div>
+      </div>
+    </section>
+
+{% endif %}
+<section class="featured-posts no-padding-top">
+      <div class="container">
+        <!-- Post-->
+
+        {% for obj in object_list %}
+
+        <div class="row d-flex align-items-stretch">
+          {% if forloop.counter|modulo:2 == 1 %}
+
+
+          <div class="image col-lg-5">
+              <img src="{{obj.thumbnail.url}}" class="img-fluid" style=""  alt="...">
+          </div>
+          {% endif %}
+          <div class="text col-lg-7">
+            <div class="text-inner d-flex align-items-center">
+              <div class="content">
+                <header class="post-header">
+                  <div class="category">
+                    {% for cat in obj.categories.all%}
+                      <strong>{{cat}}</strong>
+                    {% endfor %}
+                  </div><a href="{{obj.get_absolute_url}}">
+
+                  <h2 class="h4" style="color:black;">{{obj.title}}</h2></a>
+                  <a href="{% url 'favourite-update' obj.id %}" class="btn btn-warning" style="float:right;">Remove from Favourites</a>
+                </header>
+                <p>{{obj.overview|linebreaks|truncatechars:300}}</p>
+                <footer class="post-footer d-flex align-items-center">
+                    <div class="avatar"><img src="{{ obj.author.profile_picture.url}}" alt="..." class="img-fluid"></div>
+                    <div class="title"><span>{{obj.author}}</span></div>
+                  <div class="date"><i class="icon-clock"></i> {{obj.timestamp|timesince}} ago</div>
+                  <div class="comments"><i class="icon-comment"></i>{{obj.comment_count}}</div>
+                </footer>
+              </div>
+            </div>
+          </div>
+          {% if forloop.counter|modulo:2 != 1 %}
+
+          <div class="image col-lg-5">
+              <img src="{{obj.thumbnail.url}}" class="img-fluid" style=""  alt="...">
+          </div>
+          {% endif %}
+        </div>
+        {% endfor %}
+
+      </div>
+    </section>
+
+{% endblock content %}

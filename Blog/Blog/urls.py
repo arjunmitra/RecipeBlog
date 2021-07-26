@@ -18,7 +18,7 @@ from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
 from post.views import index, blog, post, search, category_search,\
-    post_update,post_delete, post_create
+    post_update,post_delete, post_create, favourite_update,favourite_list
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,4 +31,6 @@ urlpatterns = [
     path('search/', search,name="search"),
     path('categories', category_search,name="category-search"),
     path('accounts/', include('allauth.urls')),
+    path('fav/<id>/', favourite_update, name="favourite-update"),
+    path('favourites/', favourite_list, name="favourite-list"),
 ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

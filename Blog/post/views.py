@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404,redirect,reverse
 from .models import Post, Category, Author, PostView
@@ -6,6 +7,26 @@ from .forms import CommentForm, PostForm
 from django.conf import settings
 
 import os
+
+@login_required
+def favourite_list(request):
+    queryset = Post.objects.filter(favourites=request.user)
+    if len(queryset) ==0:
+        empty = True
+    else:
+        empty = False
+    context = {'object_list':queryset, "isEmpty":empty}
+    return render(request,'favourites.html',context)
+
+@login_required
+def favourite_update(request,id):
+    post = get_object_or_404(Post,id=id)
+    if post.favourites.filter(id=request.user.id).exists():
+        post.favourites.remove(request.user)
+    else:
+        post.favourites.add(request.user)
+
+    return redirect(reverse('post-detail',args=(id,)))
 
 # method to get other object
 def get_author(user):
@@ -79,6 +100,10 @@ def blog(request):
 # specific post page
 def post(request,id):
     post = get_object_or_404(Post, id=id)# retrieving post object
+    if post.favourites.filter(id=request.user.id).exists():
+        favourite = True
+    else:
+        favourite = False
     most_recent = Post.objects.order_by("-timestamp")[:3] # getting latest 3 posts
     category_count = get_category_count() # getting category and post counts
     if request.user.is_authenticated:
@@ -95,6 +120,7 @@ def post(request,id):
         'post' : post,
         'most_recent': most_recent,
         'category_count': category_count,
+        'favourite': favourite,
         'form' : form
 
 
@@ -102,6 +128,7 @@ def post(request,id):
     return render(request,"post.html",context )
 
 # create link, only viewable to admin and staff
+@login_required
 def post_create(request ):
     title="Create"
     form = PostForm(request.POST or None, request.FILES or None )
@@ -120,7 +147,7 @@ def post_create(request ):
         'form':form
     }
     return render(request,"post_create.html" , context)
-
+@login_required
 def post_update(request,id):
     title = "Update"
     post = get_object_or_404(Post, id=id)
@@ -141,6 +168,7 @@ def post_update(request,id):
     }
     return render(request, "post_create.html", context)
 
+@login_required
 def post_delete(request,id):
     post = get_object_or_404(Post,id=id)
     post.delete()# deleting post

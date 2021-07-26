@@ -28,6 +28,7 @@ class Post(models.Model):
     thumbnail = models.ImageField(upload_to='postImages/')
     categories = models.ManyToManyField(Category)
     featured = models.BooleanField()# whether we want to feature post on home page
+    favourites = models.ManyToManyField(User,related_name="favourite",default=None,blank=True)
     previous_post = models.ForeignKey('self',related_name='previous',on_delete=models.SET_NULL, blank=True,null=True)
     next_post = models.ForeignKey('self',related_name='next', on_delete=models.SET_NULL,blank=True,null=True)
 
