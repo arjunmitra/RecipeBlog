@@ -5,8 +5,51 @@ from .models import Post, Category, Author, PostView
 from django.db.models import Count, Q
 from .forms import CommentForm, PostForm
 from django.conf import settings
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from .serializers import PostSerializer
+from django.http import JsonResponse
+
+from io import StringIO
+from html.parser import HTMLParser
 
 import os
+
+class MLStripper(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.reset()
+        self.strict = False
+        self.convert_charrefs= True
+        self.text = StringIO()
+    def handle_data(self, d):
+        self.text.write(d)
+    def get_data(self):
+        return self.text.getvalue()
+
+def strip_tags(html):
+    s = MLStripper()
+    s.feed(html)
+    return s.get_data()
+#
+class TestView(APIView):
+    def get(self,request, *args, **kwargs):
+        queryset = Post.objects.all()
+        payload = {}
+        for i in range(len(queryset)):
+            fields = ['title', 'overview', 'body', 'categories']
+            item = {}
+            for field in fields:
+                item[field] = ""
+            item[fields[0]] = queryset[i].title
+            item[fields[1]] = queryset[i].overview
+            item[fields[2]] = strip_tags(queryset[i].body)
+            item[fields[3]] = []
+            categories = queryset[i].categories.all()
+            for category in categories:
+                item[fields[3]].append(category.title)
+            payload[i+1] = item
+        return Response(payload)
 
 @login_required
 def favourite_list(request):
