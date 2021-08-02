@@ -7,8 +7,7 @@ from .forms import CommentForm, PostForm
 from django.conf import settings
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import PostSerializer
-from django.http import JsonResponse
+
 
 from io import StringIO
 from html.parser import HTMLParser
@@ -31,24 +30,36 @@ def strip_tags(html):
     s = MLStripper()
     s.feed(html)
     return s.get_data()
-#
-class TestView(APIView):
+
+class PostInfo(APIView):
     def get(self,request, *args, **kwargs):
+        # retrieve all posts
         queryset = Post.objects.all()
+        # dictionary containing information about each post
         payload = {}
         for i in range(len(queryset)):
-            fields = ['title', 'overview', 'body', 'categories']
+            # fields we will share through API
+            fields = ['title', 'overview', 'body', 'categories','thumbnail','view_count','comment_count','author','timestamp']
             item = {}
             for field in fields:
                 item[field] = ""
             item[fields[0]] = queryset[i].title
             item[fields[1]] = queryset[i].overview
-            item[fields[2]] = strip_tags(queryset[i].body)
+            #removing html tags and whitespaces
+            item[fields[2]] =  ' '.join(strip_tags(queryset[i].body).split())
             item[fields[3]] = []
             categories = queryset[i].categories.all()
             for category in categories:
+                #categories is a list
                 item[fields[3]].append(category.title)
-            payload[i+1] = item
+            item[fields[4]] = queryset[i].thumbnail.url
+            item[fields[5]] = queryset[i].view_count
+            item[fields[6]] = queryset[i].comment_count
+            item[fields[7]] = queryset[i].author.user.username
+            item[fields[8]] = queryset[i].timestamp
+            # inserting into paylaod with key title and value post item
+            payload[queryset[i].title] = item
+
         return Response(payload)
 
 @login_required

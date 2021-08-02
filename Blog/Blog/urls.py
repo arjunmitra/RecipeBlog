@@ -18,7 +18,7 @@ from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
 from post.views import index, blog, post, search, category_search,\
-    post_update,post_delete, post_create, favourite_update,favourite_list, TestView
+    post_update,post_delete, post_create, favourite_update,favourite_list, PostInfo
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -34,5 +34,5 @@ urlpatterns = [
     path('fav/<id>/', favourite_update, name="favourite-update"),
     path('favourites/', favourite_list, name="favourite-list"),
     path('api-auth/', include('rest_framework.urls')),
-    path('api/',TestView.as_view(),name='test'),
+    path('api/',PostInfo.as_view(),name='posts-api'),
 ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
