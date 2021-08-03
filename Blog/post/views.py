@@ -1,19 +1,23 @@
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404,redirect,reverse
-from .models import Post, Category, Author, PostView
 from django.db.models import Count, Q
-from .forms import CommentForm, PostForm
 from django.conf import settings
+
+from .models import Post, Category, Author, PostView
+from .forms import CommentForm, PostForm
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
-
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authtoken.models import Token
 
 from io import StringIO
 from html.parser import HTMLParser
 
 import os
 
+# Helper class to strip whitespace from strings
 class MLStripper(HTMLParser):
     def __init__(self):
         super().__init__()
@@ -26,12 +30,15 @@ class MLStripper(HTMLParser):
     def get_data(self):
         return self.text.getvalue()
 
+# functions to remove whitespace from strings
 def strip_tags(html):
     s = MLStripper()
     s.feed(html)
     return s.get_data()
 
 class PostInfo(APIView):
+    permission_classes = (IsAuthenticated,)
+
     def get(self,request, *args, **kwargs):
         # retrieve all posts
         queryset = Post.objects.all()
@@ -61,6 +68,7 @@ class PostInfo(APIView):
             payload[queryset[i].title] = item
 
         return Response(payload)
+
 
 @login_required
 def favourite_list(request):
@@ -138,6 +146,13 @@ def get_category_count():
 
 # home page
 def index(request):
+    if request.user.is_authenticated:
+        # Token.objects.get_or_create(user=request.user)
+        if not Token.objects.filter(user=request.user).exists():
+            Token.objects.create(user=request.user)
+            print("creating")
+        else:
+            print('existed')
     featured = Post.objects .filter(featured = True) # retrieving posts that we want to feature
     latest = Post.objects.order_by('-timestamp')[0:3]
     context = {

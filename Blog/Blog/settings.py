@@ -51,6 +51,7 @@ INSTALLED_APPS = [
 
     # rest API
     'rest_framework',
+    'rest_framework.authtoken',
 
 ]
 SITE_ID = 1
@@ -169,3 +170,8 @@ CKEDITOR_CONFIGS = {
     },
 }
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES':[
+        'rest_framework.authentication.TokenAuthentication'
+    ]
+}
